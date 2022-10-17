@@ -37,7 +37,7 @@ with oracledb.connect(user=un, password=pw, dsn=cs) as con:
                 print("today = " + str(today), file=log)  # debug
                 
                 # # list of all activity names for debugging purposes on the spreadsheet, not needed in final output
-                # activityNames = ['ACTIVITIES.BOYS_BASKETBALL','ACTIVITIES.BOYS_SOCCER','ACTIVITIES.WRESTLING','ACTIVITIES.LACROSSE','ACTIVITIES.BOYS_BASEBALL','ACTIVITIES.BOYS_CROSS_COUNTRY','ACTIVITIES.BOYS_TENNIS','ACTIVITIES.BOYS_TRACK_FIELD','ACTIVITIES.CHEERLEADING','ACTIVITIES.FOOTBALL','ACTIVITIES.GIRLS_BASKETBALL','ACTIVITIES.GIRLS_BOWLING','ACTIVITIES.GIRLS_CROSS_COUNTRY','ACTIVITIES.GIRLS_GOLF','ACTIVITIES.GIRLS_SOCCER','ACTIVITIES.GIRLS_SOFTBALL','ACTIVITIES.GIRLS_TENNIS','ACTIVITIES.GIRLS_TRACK_FIELD','ACTIVITIES.GIRLS_VOLLEYBALL','ACTIVITIES.BOYS_GOLF','ACTIVITIES.POMS','ACTIVITIES.CROSS_COUNTRY','ACTIVITIES.TRACK_AND_FIELD','ACTIVITIES.VOLLEYBALL','ACTIVITIES.ESPORTS','ACTIVITIES.BOWLING','ACTIVITIES.WYSE','ACTIVITIES.ACADEMIC_TEAM','ACTIVITIES.BAND','ACTIVITIES.BEST_BUDDIES','ACTIVITIES.BOOK_CLUB','ACTIVITIES.CONCERT_BAND','ACTIVITIES.CONCERT_CHOIR','ACTIVITIES.CULINARY','ACTIVITIES.DRAMA','ACTIVITIES.FBLA','ACTIVITIES.FRENCH','ACTIVITIES.GREEN','ACTIVITIES.HEALTH_CARE_CLUB','ACTIVITIES.INTERNATIONAL','ACTIVITIES.MARCHING_BAND','ACTIVITIES.MATH_COUNTS','ACTIVITIES.MATH_TEAM','ACTIVITIES.MUSICAL','ACTIVITIES.NHS','ACTIVITIES.PEER','ACTIVITIES.PEP_BAND','ACTIVITIES.PLAY','ACTIVITIES.PROM','ACTIVITIES.SCHOLASTIC_BOWL','ACTIVITIES.SHOW_CHOIR','ACTIVITIES.SPANISH','ACTIVITIES.SPECIAL_OLYMPICS','ACTIVITIES.SPIRIT','ACTIVITIES.STUDENT_COUNCIL','ACTIVITIES.SWING_CHOIR']
+                # activityNames = ['ACTIVITIES.BOYS_BASKETBALL','ACTIVITIES.BOYS_SOCCER','ACTIVITIES.WRESTLING','ACTIVITIES.LACROSSE','ACTIVITIES.BOYS_BASEBALL','ACTIVITIES.BOYS_CROSS_COUNTRY','ACTIVITIES.BOYS_TENNIS','ACTIVITIES.BOYS_TRACK_FIELD','ACTIVITIES.CHEERLEADING','ACTIVITIES.FOOTBALL','ACTIVITIES.GIRLS_BASKETBALL','ACTIVITIES.GIRLS_BOWLING','ACTIVITIES.GIRLS_CROSS_COUNTRY','ACTIVITIES.GIRLS_GOLF','ACTIVITIES.GIRLS_SOCCER','ACTIVITIES.GIRLS_SOFTBALL','ACTIVITIES.GIRLS_TENNIS','ACTIVITIES.GIRLS_TRACK_FIELD','ACTIVITIES.GIRLS_VOLLEYBALL','ACTIVITIES.BOYS_GOLF','ACTIVITIES.POMS','ACTIVITIES.CROSS_COUNTRY','ACTIVITIES.TRACK_AND_FIELD','ACTIVITIES.VOLLEYBALL','ACTIVITIES.ESPORTS','ACTIVITIES.BOWLING','ACTIVITIES.WYSE','ACTIVITIES.ACADEMIC_TEAM','ACTIVITIES.BAND','ACTIVITIES.BEST_BUDDIES','ACTIVITIES.BOOK_CLUB','ACTIVITIES.CONCERT_BAND','ACTIVITIES.CONCERT_CHOIR','ACTIVITIES.CULINARY','ACTIVITIES.DRAMA','ACTIVITIES.FBLA','ACTIVITIES.FRENCH','ACTIVITIES.GREEN','ACTIVITIES.HEALTH_CARE_CLUB','ACTIVITIES.INTERNATIONAL','ACTIVITIES.MARCHING_BAND','ACTIVITIES.MATH_COUNTS','ACTIVITIES.MATH_TEAM','ACTIVITIES.MUSICAL','ACTIVITIES.NHS','ACTIVITIES.PEER','ACTIVITIES.PEP_BAND','ACTIVITIES.PLAY','ACTIVITIES.PROM','ACTIVITIES.SCHOLASTIC_BOWL','ACTIVITIES.SHOW_CHOIR','ACTIVITIES.SPANISH','ACTIVITIES.SPECIAL_OLYMPICS','ACTIVITIES.SPIRIT','ACTIVITIES.STUDENT_COUNCIL','ACTIVITIES.SWING_CHOIR','ACTIVITIES.POWERLIFTING','ACTIVITIES.DEBATE','ACTIVITIES.YEARBOOK','ACTIVITIES.NAHS','ACTIVITIES.VARSITY']
                 # print('STUDENTS.STUDENT_NUMBER,', end='', file=output)
                 # for i in range(len(activityNames)): #go through each element one at a time
                 #     print(activityNames[i], end='', file=output) # print the activities element without the newline at the end
@@ -54,7 +54,7 @@ with oracledb.connect(user=un, password=pw, dsn=cs) as con:
                         sys.stdout.write('\rProccessing student entry %i' % count) # sort of fancy text to display progress of how many students are being processed without making newlines
                         sys.stdout.flush()
                         # define a huge dictionary of the course names as keys, and empty strings as the values. As the student courses are found these strings will update to a 1
-                        activities = {'ATH-BOYS BASKETBALL':'','ATH-BOYS SOCCER':'','ATH-WRESTLING':'','ATH-LACROSSE':'','ATH-BOYS BASEBALL':'','ATH-BOYS CROSS COUNTRY':'','ATH-BOYS TENNIS':'','ATH-BOYS TRACK AND FIELD':'','ATH-CHEERLEADING':'','ATH-FOOTBALL':'','ATH-GIRLS BASKETBALL':'','ATH-GIRLS BOWLING':'','ATH-GIRLS CROSS-COUNTRY':'','ATH-GIRLS GOLF':'','ATH-GIRLS SOCCER':'','ATH-GIRLS SOFTBALL':'','ATH-GIRLS TENNIS':'','ATH-GIRLS TRACK AND FIELD':'','ATH-GIRLS VOLLEYBALL':'','ATH- BOYS GOLF':'','ATH-POMS':'','ATH-CROSS COUNTRY':'','ATH-TRACK TEAM':'','ATH-VOLLEYBALL':'','ATH-ESPORTS':'','ATH-BOWLING':'','ACT-ACADEMIC CHALLENGE-WYSE':'','ACT-ACADEMIC TEAM':'','ACT-BAND':'','ACT-BEST BUDDIES':'','ACT-BOOK CLUB':'','ACT-CONCERT BAND':'','ACT-CONCERT CHOIR':'','ACT-CULINARY ARTS CLUB':'','ACT-DRAMA CLUB':'','ACT-FBLA':'','ACT-FRENCH CLUB':'','ACT-GREEN CLUB':'','ACT-HEALTH CARE CLUB':'','ACT-INTERNATIONAL CLUB':'','ACT-MARCHING BAND':'','ACT-MATH COUNTS':'','ACT-MATH TEAM':'','ACT-MUSICAL':'','ACT-NATIONAL HONORS SOCIETY':'','ACT-PEER MEDIATION':'','ACT-PEP BAND':'','ACT-PLAY':'','ACT-PROM COMMITTEE':'','ACT-SCHOLASTIC BOWL':'','ACT-SHOW CHOIR':'','ACT-SPANISH CLUB':'','ACT-SPECIAL OLYMPICS':'','ACT-SPIRIT CLUB':'','ACT-STUDENT COUNCIL':'','ACT-SWING CHOIR':''}
+                        activities = {'ATH-BOYS BASKETBALL':'','ATH-BOYS SOCCER':'','ATH-WRESTLING':'','ATH-LACROSSE':'','ATH-BOYS BASEBALL':'','ATH-BOYS CROSS COUNTRY':'','ATH-BOYS TENNIS':'','ATH-BOYS TRACK AND FIELD':'','ATH-CHEERLEADING':'','ATH-FOOTBALL':'','ATH-GIRLS BASKETBALL':'','ATH-GIRLS BOWLING':'','ATH-GIRLS CROSS-COUNTRY':'','ATH-GIRLS GOLF':'','ATH-GIRLS SOCCER':'','ATH-GIRLS SOFTBALL':'','ATH-GIRLS TENNIS':'','ATH-GIRLS TRACK AND FIELD':'','ATH-GIRLS VOLLEYBALL':'','ATH- BOYS GOLF':'','ATH-POMS':'','ATH-CROSS COUNTRY':'','ATH-TRACK TEAM':'','ATH-VOLLEYBALL':'','ATH-ESPORTS':'','ATH-BOWLING':'','ACT-ACADEMIC CHALLENGE-WYSE':'','ACT-ACADEMIC TEAM':'','ACT-BAND':'','ACT-BEST BUDDIES':'','ACT-BOOK CLUB':'','ACT-CONCERT BAND':'','ACT-CONCERT CHOIR':'','ACT-CULINARY ARTS CLUB':'','ACT-DRAMA CLUB':'','ACT-FBLA':'','ACT-FRENCH CLUB':'','ACT-GREEN CLUB':'','ACT-HEALTH CARE CLUB':'','ACT-INTERNATIONAL CLUB':'','ACT-MARCHING BAND':'','ACT-MATH COUNTS':'','ACT-MATH TEAM':'','ACT-MUSICAL':'','ACT-NATIONAL HONORS SOCIETY':'','ACT-PEER MEDIATION':'','ACT-PEP BAND':'','ACT-PLAY':'','ACT-PROM COMMITTEE':'','ACT-SCHOLASTIC BOWL':'','ACT-SHOW CHOIR':'','ACT-SPANISH CLUB':'','ACT-SPECIAL OLYMPICS':'','ACT-SPIRIT CLUB':'','ACT-STUDENT COUNCIL':'','ACT-SWING CHOIR':'','ACT-POWERLIFTING CLUB':'','ACT-DEBATE CLUB':'','ACT-YEARBOOK':'','ACT-NATIONAL ART HONOR SOCIETY':'','ACT-VARSITY CLUB':''}
                         idNum = str(int(student[0])) # the student number usually referred to as their "id number"
                         stuDCID = str(student[1]) # the student dcid
                         internalID = int(student[2]) #get the internal id of the student that is referenced in the classes entries
@@ -76,16 +76,20 @@ with oracledb.connect(user=un, password=pw, dsn=cs) as con:
                                         userClasses = cur.fetchall()
                                         for entry in userClasses: # go through each class that has the ath- or act- in the name
                                             # print(entry)
-                                            print(entry, file=log)
-                                            activities.update({entry[5]: '1'}) # update the students activities dictionary with a 1 as the value for the class name key
+                                            className = entry[5]
+                                            if className in activities: # if the class has a matching activity flag
+                                                print(entry, file=log)
+                                                activities.update({className: '1'}) # update the students activities dictionary with a 1 as the value for the class name key
+                                            else: # if we dont have a matching activity flag for the class we dont want to do an update on the dictionary or it will add it to the end and throw off the import
+                                                print("ERROR: Found class with no matching activity flag defined: " + str(entry), file=log)
         
                             except Exception as er:
                                 print('Error getting courses on ' + str(idNum) + ': ' + str(er))
                             
                         # print the student's list of activities to the output file regardless of whether they were active or not
-                        print(activities, file=log)
-                        print(activities.values(), file=log)
-                        print(list(activities.values()), file=log)
+                        # print(activities, file=log)
+                        # print(activities.values(), file=log)
+                        # print(list(activities.values()), file=log)
                         activityFlags = list(activities.values())
                         print(idNum + ',', end='', file=output) # print the student's ID number as the first element of the line
                         for i in range(len(activityFlags)): #go through each element one at a time
@@ -98,3 +102,16 @@ with oracledb.connect(user=un, password=pw, dsn=cs) as con:
                         
                     except Exception as er:
                         print('Error on ' + str(student[0]) + ': ' + str(er))
+            print('')
+            #after all the output file is done writing and now closed, open an sftp connection to the server and place the file on there
+            with pysftp.Connection(sftpHOST, username=sftpUN, password=sftpPW, cnopts=cnopts) as sftp:
+                print('SFTP connection established')
+                print('SFTP connection established', file=log)
+                # print(sftp.pwd)  # debug to show current directory
+                # print(sftp.listdir())  # debug to show files and directories in our location
+                sftp.chdir('/sftp/studentActivities/')
+                # print(sftp.pwd) # debug to show current directory
+                # print(sftp.listdir())  # debug to show files and directories in our location
+                sftp.put('activities.txt') #upload the file onto the sftp server
+                print("Schedule file placed on remote server for " + str(today))
+                print("Schedule file placed on remote server for " + str(today), file=log)
