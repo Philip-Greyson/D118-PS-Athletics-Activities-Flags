@@ -28,40 +28,38 @@ print("SFTP Username: " + str(sftpUN) + " |SFTP Password: " + str(sftpPW) + " |S
 # create the connecton to the database
 with oracledb.connect(user=un, password=pw, dsn=cs) as con:
     with con.cursor() as cur:  # start an entry cursor
-        with open('activities_log.txt', 'w') as outputLog:  # open the logging file
+        with open('activities_log.txt', 'w') as log:  # open the logging file
             with open('activities.txt', 'w') as output: # open the output file
                 print("Connection established: " + con.version)
-                print("Connection established: " + con.version, file=outputLog)
+                print("Connection established: " + con.version, file=log)
                 today = datetime.now() #get todays date and store it for finding the correct term later
                 print("today = " + str(today))  # debug
-                print("today = " + str(today), file=outputLog)  # debug
+                print("today = " + str(today), file=log)  # debug
                 
-                # fieldnames = []
+                # # list of all activity names for debugging purposes on the spreadsheet, not needed in final output
+                # activityNames = ['ACTIVITIES.BOYS_BASKETBALL','ACTIVITIES.BOYS_SOCCER','ACTIVITIES.WRESTLING','ACTIVITIES.LACROSSE','ACTIVITIES.BOYS_BASEBALL','ACTIVITIES.BOYS_CROSS_COUNTRY','ACTIVITIES.BOYS_TENNIS','ACTIVITIES.BOYS_TRACK_FIELD','ACTIVITIES.CHEERLEADING','ACTIVITIES.FOOTBALL','ACTIVITIES.GIRLS_BASKETBALL','ACTIVITIES.GIRLS_BOWLING','ACTIVITIES.GIRLS_CROSS_COUNTRY','ACTIVITIES.GIRLS_GOLF','ACTIVITIES.GIRLS_SOCCER','ACTIVITIES.GIRLS_SOFTBALL','ACTIVITIES.GIRLS_TENNIS','ACTIVITIES.GIRLS_TRACK_FIELD','ACTIVITIES.GIRLS_VOLLEYBALL','ACTIVITIES.BOYS_GOLF','ACTIVITIES.POMS','ACTIVITIES.CROSS_COUNTRY','ACTIVITIES.TRACK_AND_FIELD','ACTIVITIES.VOLLEYBALL','ACTIVITIES.ESPORTS','ACTIVITIES.BOWLING','ACTIVITIES.WYSE','ACTIVITIES.ACADEMIC_TEAM','ACTIVITIES.BAND','ACTIVITIES.BEST_BUDDIES','ACTIVITIES.BOOK_CLUB','ACTIVITIES.CONCERT_BAND','ACTIVITIES.CONCERT_CHOIR','ACTIVITIES.CULINARY','ACTIVITIES.DRAMA','ACTIVITIES.FBLA','ACTIVITIES.FRENCH','ACTIVITIES.GREEN','ACTIVITIES.HEALTH_CARE_CLUB','ACTIVITIES.INTERNATIONAL','ACTIVITIES.MARCHING_BAND','ACTIVITIES.MATH_COUNTS','ACTIVITIES.MATH_TEAM','ACTIVITIES.MUSICAL','ACTIVITIES.NHS','ACTIVITIES.PEER','ACTIVITIES.PEP_BAND','ACTIVITIES.PLAY','ACTIVITIES.PROM','ACTIVITIES.SCHOLASTIC_BOWL','ACTIVITIES.SHOW_CHOIR','ACTIVITIES.SPANISH','ACTIVITIES.SPECIAL_OLYMPICS','ACTIVITIES.SPIRIT','ACTIVITIES.STUDENT_COUNCIL','ACTIVITIES.SWING_CHOIR']
+                # print('STUDENTS.STUDENT_NUMBER,', end='', file=output)
+                # for i in range(len(activityNames)): #go through each element one at a time
+                #     print(activityNames[i], end='', file=output) # print the activities element without the newline at the end
+                #     if i != (len(activityNames) - 1): # if we are not on the final element
+                #         print(',', end='', file=output) # print a comma separator
+                #     else: # if we are on the final activity
+                #         print('', file=output) # print a newline
 
-                # cur.execute('SELECT * FROM activities')
-                # for column in cur.description:
-                #     print(column)
-                #     fieldnames.append(column[0])
-                # activityRows = cur.fetchall()
-                # for student in activityRows:
-                #     activities = []
-                #     for i, field in enumerate(student):
-                #         if field:
-                #             activities.append(str(fieldnames[i]) + ': ' + str(field))
-                #             # print(str(fieldnames[i]) + ': ' + str(field))
-                #     if (len(activities) > 5):
-                #         print(activities)
+                # do the sql query on students getting required info to get the course enrollments
                 cur.execute('SELECT student_number, dcid, id, schoolid, enroll_status, grade_level FROM students ORDER BY student_number DESC')
                 rows = cur.fetchall()
-                for count, student in enumerate(rows):
+                for count, student in enumerate(rows): # go through each student
                     try:
-                        # sys.stdout.write('\rProccessing student entry %i' % count) # sort of fancy text to display progress of how many students are being processed without making newlines
-                        # sys.stdout.flush()
-                        idNum = str(int(student[0]))
-                        stuDCID = str(student[1])
+                        sys.stdout.write('\rProccessing student entry %i' % count) # sort of fancy text to display progress of how many students are being processed without making newlines
+                        sys.stdout.flush()
+                        # define a huge dictionary of the course names as keys, and empty strings as the values. As the student courses are found these strings will update to a 1
+                        activities = {'ATH-BOYS BASKETBALL':'','ATH-BOYS SOCCER':'','ATH-WRESTLING':'','ATH-LACROSSE':'','ATH-BOYS BASEBALL':'','ATH-BOYS CROSS COUNTRY':'','ATH-BOYS TENNIS':'','ATH-BOYS TRACK AND FIELD':'','ATH-CHEERLEADING':'','ATH-FOOTBALL':'','ATH-GIRLS BASKETBALL':'','ATH-GIRLS BOWLING':'','ATH-GIRLS CROSS-COUNTRY':'','ATH-GIRLS GOLF':'','ATH-GIRLS SOCCER':'','ATH-GIRLS SOFTBALL':'','ATH-GIRLS TENNIS':'','ATH-GIRLS TRACK AND FIELD':'','ATH-GIRLS VOLLEYBALL':'','ATH- BOYS GOLF':'','ATH-POMS':'','ATH-CROSS COUNTRY':'','ATH-TRACK TEAM':'','ATH-VOLLEYBALL':'','ATH-ESPORTS':'','ATH-BOWLING':'','ACT-ACADEMIC CHALLENGE-WYSE':'','ACT-ACADEMIC TEAM':'','ACT-BAND':'','ACT-BEST BUDDIES':'','ACT-BOOK CLUB':'','ACT-CONCERT BAND':'','ACT-CONCERT CHOIR':'','ACT-CULINARY ARTS CLUB':'','ACT-DRAMA CLUB':'','ACT-FBLA':'','ACT-FRENCH CLUB':'','ACT-GREEN CLUB':'','ACT-HEALTH CARE CLUB':'','ACT-INTERNATIONAL CLUB':'','ACT-MARCHING BAND':'','ACT-MATH COUNTS':'','ACT-MATH TEAM':'','ACT-MUSICAL':'','ACT-NATIONAL HONORS SOCIETY':'','ACT-PEER MEDIATION':'','ACT-PEP BAND':'','ACT-PLAY':'','ACT-PROM COMMITTEE':'','ACT-SCHOLASTIC BOWL':'','ACT-SHOW CHOIR':'','ACT-SPANISH CLUB':'','ACT-SPECIAL OLYMPICS':'','ACT-SPIRIT CLUB':'','ACT-STUDENT COUNCIL':'','ACT-SWING CHOIR':''}
+                        idNum = str(int(student[0])) # the student number usually referred to as their "id number"
+                        stuDCID = str(student[1]) # the student dcid
                         internalID = int(student[2]) #get the internal id of the student that is referenced in the classes entries
-                        status = str(student[4])
-                        schoolID = str(student[3])
+                        status = str(student[4]) # enrollment status, 0 for active
+                        schoolID = str(student[3]) # schoolcode
                         if status == '0': # only active students will get processed, otherwise just blanked out
                             #do another query to get their classes, filter to just the current year and only course numbers that contain SH
                             try:
@@ -73,14 +71,30 @@ with oracledb.connect(user=un, password=pw, dsn=cs) as con:
                                         termid = str(termEntry[0])
                                         termDCID = str(termEntry[4])
                                         # print("Found good term for student " + str(idNum) + ": " + termid + " | " + termDCID)
-                                        print("Found good term for student " + str(idNum) + ": " + termid + " | " + termDCID, file=outputLog)
+                                        print("Found good term for student " + str(idNum) + ": " + termid + " | " + termDCID, file=log)
                                         cur.execute("SELECT cc.schoolid, cc.course_number, cc.sectionid, cc.section_number, cc.expression, courses.course_name FROM cc LEFT JOIN courses ON cc.course_number = courses.course_number WHERE (instr(courses.course_name, 'ATH-') > 0 OR instr(courses.course_name, 'ACT-') > 0)AND cc.studentid = " + str(internalID) + " AND cc.termid = " + termid + " ORDER BY cc.course_number")
                                         userClasses = cur.fetchall()
-                                        for entry in userClasses:
-                                            print(entry)
+                                        for entry in userClasses: # go through each class that has the ath- or act- in the name
+                                            # print(entry)
+                                            print(entry, file=log)
+                                            activities.update({entry[5]: '1'}) # update the students activities dictionary with a 1 as the value for the class name key
+        
                             except Exception as er:
                                 print('Error getting courses on ' + str(idNum) + ': ' + str(er))
-                        else: # they are not active
-                            print(idNum + ',,,,,,,,,', file=output) # output all blanks as they are not in any activities
+                            
+                        # print the student's list of activities to the output file regardless of whether they were active or not
+                        print(activities, file=log)
+                        print(activities.values(), file=log)
+                        print(list(activities.values()), file=log)
+                        activityFlags = list(activities.values())
+                        print(idNum + ',', end='', file=output) # print the student's ID number as the first element of the line
+                        for i in range(len(activityFlags)): #go through each element one at a time
+                            print(activityFlags[i], end='', file=output) # print the activities flag element without the newline at the end
+                            if i != (len(activityFlags) - 1): # if we are not on the final element
+                                print(',', end='', file=output) # print a comma separator
+                            else: # if we are on the final element
+                                print('', file=output) # print a newline
+                        # print(activities)
+                        
                     except Exception as er:
                         print('Error on ' + str(student[0]) + ': ' + str(er))
