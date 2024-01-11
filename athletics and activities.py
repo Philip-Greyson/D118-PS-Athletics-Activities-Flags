@@ -12,6 +12,7 @@ Needs oracledb: pip install oracledb --upgrade
 See the following for table information
 https://docs.powerschool.com/PSDD/powerschool-tables/cc-4-ver3-6-1
 https://docs.powerschool.com/PSDD/powerschool-tables/terms-13-ver3-6-1
+https://ps.powerschool-docs.com/pssis-data-dictionary/latest/activities-ver9-2-0
 """
 
 
@@ -75,7 +76,7 @@ if __name__ == '__main__':  # main file execution
                             if status == '0':  # only active students will get processed further, otherwise they are left just blanked out
                                 # do another query to get their classes, filter to just the current year and only course numbers that contain SH
                                 try:
-                                    cur.execute("SELECT id, firstday, lastday, schoolid, dcid FROM terms WHERE schoolid = :school ORDER BY dcid DESC", school = schoolID)  # get a list of terms for the school, filtering to not full years. # Use bind variables. https://python-oracledb.readthedocs.io/en/latest/user_guide/bind.html#bind
+                                    cur.execute("SELECT id, firstday, lastday, schoolid, dcid FROM terms WHERE schoolid = :school ORDER BY dcid DESC", school = schoolID)  # get a list of terms for the school. # Use bind variables. https://python-oracledb.readthedocs.io/en/latest/user_guide/bind.html#bind
                                     terms = cur.fetchall()
                                     for termEntry in terms:  # go through every term result
                                         #compare todays date to the start and end dates with 2 days before start so it populates before the first day of the term
