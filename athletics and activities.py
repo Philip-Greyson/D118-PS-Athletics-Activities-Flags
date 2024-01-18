@@ -123,15 +123,19 @@ if __name__ == '__main__':  # main file execution
                             print(f'ERROR on student {student[0]}: {er}')
                             print(f'ERROR on student {student[0]}: {er}', file=log)
 
-                #after all the output file is done writing and now closed, open an sftp connection to the server and place the file on there
-                with pysftp.Connection(D118_SFTP_HOST, username=D118_SFTP_UN, password=D118_SFTP_PW, cnopts=CNOPTS) as sftp:
-                    print(f'INFO: SFTP connection established to {D118_SFTP_HOST}')
-                    print(f'INFO: SFTP connection established to {D118_SFTP_HOST}', file=log)
-                    # print(sftp.pwd)  # debug to show current directory
-                    # print(sftp.listdir())  # debug to show files and directories in our location
-                    sftp.chdir(OUTPUT_FILE_DIRECTORY)
-                    # print(sftp.pwd) # debug to show current directory
-                    # print(sftp.listdir())  # debug to show files and directories in our location
-                    sftp.put(OUTPUT_FILE_NAME)  # upload the file onto the sftp server
-                    print("Schedule file placed on remote server for " + str(today))
-                    print("Schedule file placed on remote server for " + str(today), file=log)
+                try:
+                    #after all the output file is done writing and now closed, open an sftp connection to the server and place the file on there
+                    with pysftp.Connection(D118_SFTP_HOST, username=D118_SFTP_UN, password=D118_SFTP_PW, cnopts=CNOPTS) as sftp:
+                        print(f'INFO: SFTP connection established to {D118_SFTP_HOST}')
+                        print(f'INFO: SFTP connection established to {D118_SFTP_HOST}', file=log)
+                        # print(sftp.pwd)  # debug to show current directory
+                        # print(sftp.listdir())  # debug to show files and directories in our location
+                        sftp.chdir(OUTPUT_FILE_DIRECTORY)
+                        # print(sftp.pwd) # debug to show current directory
+                        # print(sftp.listdir())  # debug to show files and directories in our location
+                        sftp.put(OUTPUT_FILE_NAME)  # upload the file onto the sftp server
+                        print("Schedule file placed on remote server for " + str(today))
+                        print("Schedule file placed on remote server for " + str(today), file=log)
+                except Exception as er:
+                    print(f'ERROR while connecting to D118 SFTP server: {er}')
+                    print(f'ERROR while connecting to D118 SFTP server: {er}', file=log)
