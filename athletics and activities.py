@@ -60,7 +60,7 @@ if __name__ == '__main__':  # main file execution
                     print(f"DBUG: today = {today}", file=log)  # debug
 
                     # do the sql query on students getting required info to get the course enrollments
-                    cur.execute('SELECT student_number, dcid, id, schoolid, enroll_status, grade_level FROM students ORDER BY student_number DESC')
+                    cur.execute('SELECT student_number, dcid, id, schoolid, enroll_status, grade_level FROM students WHERE schoolid != 0 ORDER BY student_number DESC')
                     students = cur.fetchall()
                     activities = {}  # define an empty dictionary to hold the course names as keys and empty strings as values which will be replaced with a "1" if they are enrolled
                     for student in students:  # go through each student
